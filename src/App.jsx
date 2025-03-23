@@ -35,6 +35,15 @@ function App() {
         setTodoList(TodoList.filter((_, i) => i !== index));
     };
 
+    const handleTick = (index) => {
+        setTodoList((prevTodos) =>
+            prevTodos.map((todo, i) =>
+                i === index ? { ...todo, isCompleted: !todo.isCompleted } : todo
+            )
+        );
+    };
+
+
     return (
         <>
             <Navbar />
@@ -50,7 +59,16 @@ function App() {
                     return (
                         <div key={index} className="todos space-y-3 my-1.5">
                             <div className="todo flex justify-between items-center bg-white p-3 rounded shadow">
-                                
+
+                                <div className="checkbox">
+                                    <input
+                                        type="checkbox"
+                                        onChange={() => handleTick(index)}  // Pass index correctly
+                                        className="w-6 h-6 cursor-pointer accent-purple-900"
+                                    />
+
+                                </div>
+
                                 {/* Toggle between text and input field */}
                                 {editIndex === index ? (
                                     <input
@@ -60,8 +78,11 @@ function App() {
                                         className="border p-1 rounded"
                                     />
                                 ) : (
-                                    <div className="text">{i.Todo}</div>
+                                    <div className={`text ${i.isCompleted ? "line-through text-gray-500" : ""}`}>
+                                        {i.Todo}
+                                    </div>
                                 )}
+
 
                                 <div className="buttons space-x-2">
                                     {editIndex === index ? (
